@@ -36,7 +36,7 @@ describe('Dingus', function() {
 
       var dingus = new Dingus(options);
 
-      dingus.draw(dingus);
+      dingus.draw();
 
       assert(spy.calledOnce, 'fillRect method was called on canvas context')
       assert(spy.calledWith(0, 0, 10, 20), 'fillRect method was called with unexpected args')
@@ -44,6 +44,14 @@ describe('Dingus', function() {
 
     afterEach(function () {
       sandbox.restore();
+    });
+  });
+
+  describe('scoot()', function(){
+    it('should increment the x coordinate', function(){
+      var dingus = new Dingus({x: 0});
+      dingus.scoot();
+      assert.equal(dingus.x, 1);
     });
   });
 });
