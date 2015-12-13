@@ -5,6 +5,8 @@ const sinon = require('sinon/pkg/sinon');
 const Dingus = require('../lib/dingus')
 
 describe('Dingus', function() {
+  var sandbox;
+
   context('with default attributes', function() {
     var dingus = new Dingus({});
     it('should assign an x coordinate', function() {
@@ -20,10 +22,15 @@ describe('Dingus', function() {
       assert.equal(dingus.width, 10);
     });
   });
+
   describe('draw()', function() {
+    beforeEach(function () {
+      sandbox = sinon.sandbox.create();
+    });
+
     it('should draw itself on the canvas', function(){
       var ctx = { fillRect: function(){} };
-      var spy = sinon.spy(ctx, "fillRect");
+      var spy = sandbox.spy(ctx, "fillRect");
 
       var options = {canvas: ctx, x: 0, y: 0, height: 20, width: 10}
 
@@ -33,6 +40,10 @@ describe('Dingus', function() {
 
       assert(spy.calledOnce, 'fillRect method was called on canvas context')
       assert(spy.calledWith(0, 0, 10, 20), 'fillRect method was called with unexpected args')
+    });
+
+    afterEach(function () {
+      sandbox.restore();
     });
   });
 });
